@@ -1,0 +1,217 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <title>W-2 Tax Information Input Form</title>
+  </head>
+  <style>
+    body {
+      font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+      background-color: #f0f2f5;
+      color: #333;
+      margin: 0;
+      padding: 20px;
+      line-height: 1.6;
+    }
+
+    h1 {
+      color: #0066cc;
+      text-align: center;
+    }
+
+    form {
+      background-color: #ffffff;
+      padding: 20px;
+      border-radius: 8px;
+      box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+      max-width: 500px;
+      margin: 20px auto;
+    }
+
+    label {
+      display: block;
+      margin-bottom: 10px;
+      color: #555;
+    }
+
+    input[type="number"],
+    select {
+      width: 100%;
+      padding: 10px;
+      margin-bottom: 20px;
+      border-radius: 5px;
+      border: 1px solid #ddd;
+      box-sizing: border-box; /* Makes sure the padding doesn't affect the overall width */
+    }
+
+    input[type="submit"] {
+      display: block;
+      width: 100%;
+      padding: 10px;
+      background-color: #0066cc;
+      color: #ffffff;
+      border: none;
+      border-radius: 5px;
+      cursor: pointer;
+      font-size: 16px;
+    }
+
+    input[type="submit"]:hover {
+      background-color: #0056b3;
+    }
+
+    #taxContainer {
+      background-color: #ffffff;
+      padding: 20px;
+      border-radius: 8px;
+      box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+      max-width: 1500px;
+      margin: 20px auto;
+      color: #333;
+    }
+
+    p {
+      color: #666;
+    }
+
+    #information {
+      background-color: #ffffff;
+      padding: 20px;
+      border-radius: 8px;
+      box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+      max-width: 1500px;
+      margin: 20px auto;
+    }
+
+    button {
+      display: block;
+      width: 100%;
+      padding: 10px;
+      padding-top: 10px;
+      margin-top: 10px;
+      background-color: #0066cc;
+      color: #ffffff;
+      border: none;
+      border-radius: 5px;
+      cursor: pointer;
+      font-size: 16px;
+      transition: background-color 0.3s ease;
+    }
+
+    button:hover {
+      background-color: #0056b3;
+    }
+
+    button:active {
+      background-color: #004499;
+      transform: scale(0.98);
+    }
+
+    button:focus {
+      outline: none;
+    }
+  </style>
+  <body>
+    <h1>W-2 Tax Information Input Form</h1>
+    <form id="w2Form">
+      <fieldset>
+        <legend>Employee Information</legend>
+        <label for="employee-ssn">Social Security Number:</label>
+        <input type="text" id="employee-ssn" name="employee_ssn" />
+        <br />
+        <label for="employee-name">Employee Name:</label>
+        <input type="text" id="employee-name" name="employee_name" />
+        <br />
+        <label for="employee-address">Employee Address:</label>
+        <input type="text" id="employee-address" name="employee_address" />
+        <br />
+        <label for="employer-ein">Employer EIN:</label>
+        <input type="text" id="employer-ein" name="employer_ein" />
+        <br />
+        <label for="employer-name">Employer Name:</label>
+        <input type="text" id="employer-name" name="employer_name" />
+        <br />
+        <label for="employer-address">Employer Address:</label>
+        <input type="text" id="employer-address" name="employer_address" />
+      </fieldset>
+
+      <fieldset>
+        <legend>Wage and Tax Information</legend>
+        <label for="wages">Wages, tips, other compensation:</label>
+        <input type="number" id="wages" name="wages" />
+        <br />
+        <label for="federal-tax">Federal income tax withheld:</label>
+        <input type="number" id="federal-tax" name="federal_tax" />
+        <br />
+        <label for="social-security-wages">Social Security wages:</label>
+        <input
+          type="number"
+          id="social-security-wages"
+          name="social_security_wages"
+        />
+        <br />
+        <label for="social-security-tax">Social Security tax withheld:</label>
+        <input
+          type="number"
+          id="social-security-tax"
+          name="social_security_tax"
+        />
+        <br />
+        <label for="medicare-wages">Medicare wages and tips:</label>
+        <input type="number" id="medicare-wages" name="medicare_wages" />
+        <br />
+        <label for="medicare-tax">Medicare tax withheld:</label>
+        <input type="number" id="medicare-tax" name="medicare_tax" />
+        <br />
+        <label for="state">State:</label>
+        <input type="text" id="state" name="state" />
+        <br />
+        <label for="state-wages">State wages, tips, etc.:</label>
+        <input type="number" id="state-wages" name="state_wages" />
+        <br />
+        <label for="state-tax">State income tax:</label>
+        <input type="number" id="state-tax" name="state_tax" />
+      </fieldset>
+
+      <button type="submit">Submit</button>
+    </form>
+    <script>
+      document
+        .getElementById("w2Form")
+        .addEventListener("submit", function (event) {
+          event.preventDefault(); // Prevent the default form submission
+
+          // Gather form data
+          const formData = new FormData(document.getElementById("w2Form"));
+          let queryParams = new URLSearchParams();
+
+          for (let pair of formData.entries()) {
+            queryParams.append(pair[0], pair[1]);
+          }
+
+          // Construct the URL with query parameters
+          const requestUrl = `http://localhost:8080/w2taxform?${queryParams.toString()}`;
+
+          // Use fetch API to send the GET request
+          fetch(requestUrl)
+            .then((response) => {
+              if (response.ok) {
+                return response.text(); // or response.json() if the response is JSON
+              }
+              throw new Error("Network response was not ok.");
+            })
+            .then((data) => {
+              // Display the response in an alert
+              alert("Response from server: " + data);
+            })
+            .catch((error) => {
+              console.error(
+                "There was a problem with the fetch operation:",
+                error
+              );
+              alert("Failed to get response: " + error.message);
+            });
+        });
+    </script>
+  </body>
+</html>

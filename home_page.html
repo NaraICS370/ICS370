@@ -1,0 +1,130 @@
+<!-- index.html -->
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Tax Calculator</title>
+    <link rel="stylesheet" type="text/css" href="page.css">
+</head>
+
+<body>
+    <h1>Minnesota Federal Income Tax Calculator</h1>
+    <form id="incomeForm">
+        <label for="income">Enter your total income:</label>
+        <input type="number" id="income" name="income" required>
+
+        <label for="filingStatus">Enter your Filing Status:</label>
+        <select id="filingStatus" name="filing_status" required>
+            <option value="single">Single</option>
+            <option value="married_joint">Married Filing Jointly</option>
+            <option value="married_separate">Married Filing Separately</option>
+            <option value="head_of_household">Head of Household</option>
+        </select>
+
+        <p>Formula for calculating tax in America varies by filing status:</p>
+<ul>
+    <li>Single: 30% of Income</li>
+    <li>Married Filing Jointly: 20% of Income</li>
+    <li>Married Filing Separately: 15% of Income</li>
+    <li>Head of Household: 10% of Income</li>
+</ul>
+        <input type="submit" value="Calculate Tax">
+        <button type="button" id="moreInfoBtn">Calculate W-2 Tax Return</button>
+        <button type="button" id="contactUsBtn">W-2 Tax Information Input Form</button>
+    </form>
+
+    <div id="taxContainer">
+
+    </div>
+    <div id="information">
+        <h1>Federal Income Tax Laws</h1>
+
+        <h2>1. Taxable Income</h2>
+        <p>The Internal Revenue Code (IRC) defines taxable income as gross income minus allowable deductions and
+            exemptions. Gross income includes all income from whatever source derived, unless specifically excluded by
+            law. Deductions and exemptions are permitted for certain expenses and dependents, subject to various
+            limitations and rules.</p>
+
+        <h2>2. Tax Rates and Brackets</h2>
+        <p>The IRC establishes a system of progressive tax rates, where tax rates increase as taxable income increases.
+            Taxpayers are assigned to tax brackets based on their filing status (e.g., single, married filing jointly,
+            head of household) and income level. The tax rates and brackets are periodically adjusted for inflation.</p>
+
+        <h2>3. Standard Deduction and Itemized Deductions</h2>
+        <p>Taxpayers can choose to claim either the standard deduction or itemize their deductions, whichever results in
+            a lower taxable income. The standard deduction is a fixed amount set by law, while itemized deductions
+            include expenses such as mortgage interest, state and local taxes, charitable contributions, and medical
+            expenses.</p>
+
+        <h2>4. Tax Credits</h2>
+        <p>The IRC provides for various tax credits that directly reduce a taxpayer's federal income tax liability.
+            Common tax credits include the Earned Income Tax Credit (EITC), Child Tax Credit, education credits, and
+            energy-efficient home credits. Tax credits are generally more valuable than deductions because they reduce
+            tax liability on a dollar-for-dollar basis.</p>
+
+        <h2>5. Withholding and Estimated Tax Payments</h2>
+        <p>Employers are required to withhold federal income tax from employees' wages and remit it to the IRS on their
+            behalf. Additionally, self-employed individuals and others with income not subject to withholding must make
+            estimated tax payments throughout the year to cover their tax liability.</p>
+
+        <h2>6. Tax Filing and Payment</h2>
+        <p>Taxpayers must file their federal income tax returns annually by the due date, usually April 15th of the
+            following year. Payment of any tax owed is also due by this date. Extensions to file may be available upon
+            request, but any tax owed must still be paid by the original due date to avoid penalties and interest.</p>
+
+        <h2>7. Tax Penalties and Interest</h2>
+        <p>The IRC imposes penalties and interest on taxpayers who fail to comply with tax laws, including failure to
+            file a return, failure to pay tax owed, and underpayment of estimated tax. Penalties and interest accrue
+            from the due date of the return or the date of the underpayment, whichever is later.</p>
+
+        <h2>8. Taxpayer Rights and Responsibilities</h2>
+        <p>Taxpayers have certain rights under the IRC, including the right to challenge IRS determinations, appeal
+            decisions, and receive prompt and courteous treatment. Taxpayers are also responsible for keeping accurate
+            records, reporting income correctly, and filing timely and accurate tax returns.</p>
+    </div>
+    <script>
+        document.getElementById("moreInfoBtn").addEventListener("click", function() {
+            window.location.href = 'calculator.html'; // Redirect to More Information page
+        });
+
+        document.getElementById("contactUsBtn").addEventListener("click", function() {
+            window.location.href = 'TaxForm.html'; // Redirect to More Information page
+        });
+
+        document.getElementById("incomeForm").addEventListener("submit", function (event) {
+            event.preventDefault();
+            let income = document.getElementById("income").value;
+            let filingStatus = document.getElementById("filingStatus").value;
+            let statusNumber;
+
+            switch (filingStatus) {
+                case "single":
+                    statusNumber = 1;
+                    break;
+                case "married_joint":
+                    statusNumber = 2;
+                    break;
+                case "married_separate":
+                    statusNumber = 3;
+                    break;
+                case "head_of_household":
+                    statusNumber = 4;
+                    break;
+                default:
+                    statusNumber = 0; // Just in case no valid status is selected
+            }
+
+            // Updated to send both income and statusNumber
+            fetch(`http://localhost:8080/calculateTax?income=${income}&status=${statusNumber}`)
+                .then(response => response.text())
+                .then(data => {
+                    document.getElementById("taxContainer").innerText = "Tax amount: $" + data;
+                })
+                .catch(error => console.error('Error:', error));
+        });
+    </script>
+</body>
+
+</html>

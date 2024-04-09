@@ -1,0 +1,127 @@
+ <!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Create Account - Bicycle Tax Experts</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f0f0f0;
+        }
+        .header {
+            background-color: #007bff;
+            color: white;
+            padding: 10px 0;
+            text-align: center;
+            font-size: 24px;
+        }
+        .container {
+            max-width: 600px;
+            margin: 50px auto;
+            padding: 20px;
+            background-color: #fff;
+            border-radius: 5px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+        form {
+            display: flex;
+            flex-direction: column;
+        }
+        label {
+            margin: 10px 0 5px;
+        }
+        input, button {
+            padding: 10px;
+            margin-bottom: 20px;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            box-sizing: border-box;
+        }
+        button {
+            background-color: #007bff;
+            color: white;
+            border: none;
+            cursor: pointer;
+        }
+        button:hover {
+            background-color: #0056b3;
+        }
+        .error-message, .success-message {
+            display: none;
+            text-align: center;
+            padding: 10px;
+            border-radius: 5px;
+            margin-top: 20px;
+        }
+        .error-message {
+            background-color: #dc3545;
+            color: white;
+        }
+        .success-message {
+            background-color: #28a745;
+            color: white;
+        }
+    </style>
+</head>
+<body>
+    <div class="header">
+        Bicycle Tax Experts
+    </div>
+    <div class="container">
+        <h1>Create Account</h1>
+        <form id="accountForm">
+            <label for="username">Username:</label>
+            <input type="text" id="username" name="username" required>
+
+            <label for="email">Email:</label>
+            <input type="email" id="email" name="email" required>
+
+            <label for="password">Password:</label>
+            <input type="password" id="password" name="password" required>
+
+            <label for="confirm-password">Confirm Password:</label>
+            <input type="password" id="confirm-password" name="confirm-password" required>
+
+            <div class="terms">
+                <input type="checkbox" id="terms" name="terms" required>
+                <label for="terms">I agree to the Terms of Service</label>
+            </div>
+
+            <button type="submit">Create Account</button>
+        </form>
+        <div id="error-message" class="error-message"></div>
+        <div id="success-message" class="success-message">Account Created Successfully!</div>
+    </div>
+
+    <script>
+        document.getElementById('accountForm').onsubmit = function(event) {
+            event.preventDefault();
+            var email = document.getElementById('email').value;
+            var password = document.getElementById('password').value;
+            var confirmPassword = document.getElementById('confirm-password').value;
+
+            document.getElementById('error-message').style.display = 'none';
+            document.getElementById('success-message').style.display = 'none';
+
+            if (password !== confirmPassword) {
+                document.getElementById('error-message').textContent = 'Passwords do not match';
+                document.getElementById('error-message').style.display = 'block';
+                
+                return;
+            }
+
+            // Simulate checking for existing email
+            if (email === 'existing@example.com') { // Pretend this is the email in the database
+                document.getElementById('error-message').textContent = 'Email has already been registered';
+                document.getElementById('error-message').style.display = 'block';
+                return;
+            }
+
+            // If all checks pass, simulate successful account creation
+            document.getElementById('success-message').style.display = 'block';
+        };
+    </script>
+</body>
+</html>
