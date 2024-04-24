@@ -1,0 +1,159 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>W-2 Tax Return Calculator</title>
+  <style>
+    body {
+        font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        background-color: #f0f2f5;
+        color: #333;
+        margin: 0;
+        padding: 20px;
+        line-height: 1.6;
+    }
+
+    h1 {
+        color: #0066cc;
+        text-align: center;
+    }
+
+    form {
+        background-color: #ffffff;
+        padding: 20px;
+        border-radius: 8px;
+        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        max-width: 500px;
+        margin: 20px auto;
+    }
+
+    label {
+        display: block;
+        margin-bottom: 10px;
+        color: #555;
+    }
+
+    input[type="number"],
+    select {
+        width: 100%;
+        padding: 10px;
+        margin-bottom: 20px;
+        border-radius: 5px;
+        border: 1px solid #ddd;
+        box-sizing: border-box; /* Makes sure the padding doesn't affect the overall width */
+    }
+
+    input[type="submit"] {
+        display: block;
+        width: 100%;
+        padding: 10px;
+        background-color: #0066cc;
+        color: #ffffff;
+        border: none;
+        border-radius: 5px;
+        cursor: pointer;
+        font-size: 16px;
+    }
+
+    input[type="submit"]:hover {
+        background-color: #0056b3;
+    }
+
+    #taxContainer {
+        background-color: #ffffff;
+        padding: 20px;
+        border-radius: 8px;
+        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        max-width: 500px;
+        margin: 20px auto;
+        color: #333;
+    }
+
+    p {
+        color: #666;
+    }
+
+    #information {
+        background-color: #ffffff;
+        padding: 20px;
+        border-radius: 8px;
+        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        max-width: 1500px;
+        margin: 20px auto;
+    }
+
+    button {
+    display: block;
+    width: 100%;
+    padding: 10px;
+    padding-top: 10px;
+    margin-top: 10px;
+    background-color: #0066cc;
+    color: #ffffff;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 16px;
+    transition: background-color 0.3s ease;
+  }
+
+  button:hover {
+    background-color: #0056b3;
+  }
+
+  button:active {
+    background-color: #004499;
+    transform: scale(0.98);
+  }
+
+  button:focus {
+    outline: none;
+  }
+  </style>
+  <script>
+    function calculateTaxReturn(event) {
+      // Prevent the form from submitting
+      event.preventDefault();
+
+      // Retrieve the input values
+      var wages = parseFloat(document.getElementById('wages').value);
+      var federalTax = parseFloat(document.getElementById('federal-tax').value);
+      var stateTax = parseFloat(document.getElementById('state-tax').value);
+
+      // Simple tax return calculation (this is a placeholder and should be replaced with actual tax logic)
+      var taxReturn = wages * 0.1 - federalTax - stateTax;
+
+      // Display the result
+      alert('Estimated Tax Return: $' + taxReturn.toFixed(2));
+    }
+  </script>
+</head>
+<body>
+  <h1>W-2 Tax Return Calculator</h1>
+  <form onsubmit="calculateTaxReturn(event)">
+    <fieldset>
+      <legend>Wage and Tax Information</legend>
+      <label for="wages">Wages, tips, other compensation:</label>
+      <input type="number" id="wages" name="wages" required>
+      <br>
+      <label for="federal-tax">Federal income tax withheld:</label>
+      <input type="number" id="federal-tax" name="federal_tax" required>
+      <br>
+      <label for="state-tax">State income tax:</label>
+      <input type="number" id="state-tax" name="state_tax" required>
+    </fieldset>
+
+    <button type="submit">Calculate Return</button>
+  </form>
+  <div id="information">
+    <h1>Understanding W-2 Tax Returns</h1>
+  
+    <h2>What is a W-2?</h2>
+    <p>A W-2 form, officially titled "Wage and Tax Statement," is a document you receive from each employer you worked for during the previous tax year (typically by January 31st).  It summarizes your earnings and the taxes withheld from your paychecks throughout the year.</p>
+
+    <h2>Why is a W-2 Important for Taxes?</h2>
+    <p>The information on your W-2 is crucial for filing your federal and state income tax returns accurately. You'll report the amounts from specific boxes on the W-2 on the corresponding lines of your tax forms.</p>
+  </div>
+  
+</body>
+</html>

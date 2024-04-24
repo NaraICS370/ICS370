@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Tax Return Calculator</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 40px;
+        }
+
+        label {
+            margin-top: 10px;
+        }
+
+        input, select, button {
+            margin: 10px 0;
+            padding: 8px;
+        }
+
+        button {
+            padding: 10px 20px;
+            background-color: #4CAF50;
+            color: white;
+            border: none;
+            cursor: pointer;
+        }
+
+        button:hover {
+            background-color: #45a049;
+        }
+
+        #result {
+            margin-top: 20px;
+            padding: 20px;
+            background-color: #f4f4f4;
+            border: 1px solid #ddd;
+        }
+    </style>
+</head>
+<body>
+    <h1>Tax Return Calculator</h1>
+    <form id="w2-form">
+        <label for="fileUpload">Upload your W-2 Form:</label>
+        <input type="file" id="fileUpload" accept=".txt,.csv"><br>
+
+        <label for="filingStatus">Filing Status:</label>
+        <select id="filingStatus">
+            <option value="single">Single</option>
+            <option value="marriedJoint">Married Filing Jointly</option>
+            <option value="marriedSeparate">Married Filing Separately</option>
+            <option value="headOfHousehold">Head of Household</option>
+        </select><br>
+
+        <input type="hidden" id="apiBaseUrl" value="http://localhost:8080">
+
+        <button type="button" onclick="uploadDocument()">Upload Document</button>
+    </form>
+
+    <div id="result"></div>
+
+    <script>
+        function uploadDocument() {
+            const fileInput = document.getElementById('fileUpload');
+            if (fileInput.files.length === 0) {
+                alert('Please upload a file.');
+                return;
+            }
+
+            const file = fileInput.files[0];
+            const reader = new FileReader();
+            reader.onload = function(e) {
+                const content = e.target.result;
+
+                // Prepare the data to be sent
+                const data = {
+                    document: content,
+                    filingStatus: document.getElementById('filingStatus').value
+                };
+
+                // Update API URL to correctly point to  server
+                const apiUrl = document.getElementById('apiBaseUrl').value + '/uploadDocument';
+                fetch(apiUrl, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify(data)
+                })
+                    .then(response => {
+                        if (!response.ok) throw new Error('Network response was not ok.');
+                        return response.json();
+                    })
+                    .then(data => {
+                        console.log('Success:', data);
+                        document.getElementById('result').innerText = 'Document uploaded successfully.';
+                    })
+                    .catch((error) => {
+                        console.error('Error:', error);
+                        document.getElementById('result').innerText = 'Failed to upload document: ' + error.message;
+                    });
+            };
+            reader.readAsText(file);
+        }
+    </script>
+</body>
+</html>
